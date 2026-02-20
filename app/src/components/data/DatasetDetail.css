@@ -1,0 +1,55 @@
+.dataset-detail {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.dataset-detail__header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dataset-detail__name {
+  font-size: 18px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.dataset-detail__tabs {
+  display: flex;
+  gap: 0;
+  padding: 0 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.dataset-detail__tab {
+  padding: 12px 20px;
+  font-size: 14px;
+  color: var(--text-secondary);
+  background: none;
+  border-bottom: 2px solid transparent;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.dataset-detail__tab:hover {
+  color: var(--text-primary);
+}
+
+.dataset-detail__tab--active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+
+.dataset-detail__content {
+  flex: 1;
+  padding: 24px;
+}
+
+.dataset-detail__series {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}

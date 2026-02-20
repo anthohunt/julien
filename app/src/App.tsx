@@ -4,6 +4,7 @@ import { ReactFlowProvider } from '@xyflow/react';
 import { SplashScreen } from '@/components/SplashScreen';
 import { ProjectsPage } from '@/components/projects/ProjectsPage';
 import { NetworkEditor } from '@/components/editor/NetworkEditor';
+import { DataManagementPage } from '@/components/data/DataManagementPage';
 
 function App() {
   const [ready, setReady] = useState(false);
@@ -25,6 +26,7 @@ function App() {
             </ReactFlowProvider>
           }
         />
+        <Route path="/data" element={<DataManagementPage />} />
       </Routes>
     </div>
   );
