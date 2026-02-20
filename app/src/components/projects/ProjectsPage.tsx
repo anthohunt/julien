@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useFilteredProjects } from '@/hooks/useFilteredProjects';
 import { useProjectStore } from '@/stores/projectStore';
 import type { Project } from '@/types/project';
@@ -12,6 +13,7 @@ export function ProjectsPage() {
   const projects = useFilteredProjects();
   const addProject = useProjectStore((s) => s.addProject);
   const deleteProject = useProjectStore((s) => s.deleteProject);
+  const navigate = useNavigate();
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [projectToDelete, setProjectToDelete] = useState<Project | null>(null);
 
@@ -42,7 +44,7 @@ export function ProjectsPage() {
               <ProjectCard
                 key={project.id}
                 project={project}
-                onOpen={() => {}}
+                onOpen={(id) => navigate(`/editor?project=${id}`)}
                 onDelete={() => setProjectToDelete(project)}
               />
             ))}
