@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/nicegram/nicegram-android/develop/.cargo/tauri.conf.json",
+  "$schema": "https://raw.githubusercontent.com/tauri-apps/tauri/dev/crates/tauri-cli/schema.json",
   "productName": "NeuralForge",
   "version": "0.1.0",
   "identifier": "com.neuralforge.app",
@@ -22,9 +22,5 @@
     "security": {
       "csp": null
     }
-  },
-  "plugins": {
-    "fs": {},
-    "store": {}
   }
 }
