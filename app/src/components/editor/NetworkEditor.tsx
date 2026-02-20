@@ -73,6 +73,24 @@ export function NetworkEditor() {
     return () => { cancelled = true; };
   }, [searchParams, loadFromJSON]);
 
+  /* ── Click-to-add from palette (macOS Tauri DnD fallback) ── */
+  const onPaletteLayerClick = useCallback(
+    (layer: LayerDefinition) => {
+      if (!reactFlowInstance.current) return;
+      const viewport = reactFlowInstance.current.getViewport();
+      // Place at center of visible canvas area
+      const canvasEl = document.querySelector('.network-editor__canvas');
+      const w = canvasEl?.clientWidth ?? 800;
+      const h = canvasEl?.clientHeight ?? 600;
+      const centerX = (-viewport.x + w / 2) / viewport.zoom;
+      const centerY = (-viewport.y + h / 2) / viewport.zoom;
+      // Slight random offset so stacked clicks don't overlap exactly
+      const offset = () => (Math.random() - 0.5) * 60;
+      addNode(layer, { x: centerX + offset(), y: centerY + offset() });
+    },
+    [addNode],
+  );
+
   /* ── Drag-and-drop from palette ───────────────────────────── */
   const onDragOver = useCallback((e: DragEvent) => {
     e.preventDefault();
@@ -82,9 +100,37 @@ export function NetworkEditor() {
   const onDrop = useCallback(
     (e: DragEvent) => {
       e.preventDefault();
+      console.log('[DnD] onDrop fired on ReactFlow – types:', e.dataTransfer.types);
       const layerData = e.dataTransfer.getData('application/neuralforge-layer');
+      console.log('[DnD] onDrop – layerData:', layerData || '(empty)');
       if (!layerData || !reactFlowInstance.current) return;
 
+      const layer: LayerDefinition = JSON.parse(layerData);
+      const position = reactFlowInstance.current.screenToFlowPosition({
+        x: e.clientX,
+        y: e.clientY,
+      });
+
+      addNode(layer, position);
+    },
+    [addNode],
+  );
+
+  /* ── Wrapper-level DnD fallback (macOS Tauri webview) ────── */
+  const onWrapperDragOver = useCallback((e: DragEvent) => {
+    // Only act if it hasn't been handled by ReactFlow already
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  }, []);
+
+  const onWrapperDrop = useCallback(
+    (e: DragEvent) => {
+      // Fallback: if ReactFlow didn't consume the drop, handle it here
+      const layerData = e.dataTransfer.getData('application/neuralforge-layer');
+      console.log('[DnD] onWrapperDrop fired – layerData:', layerData || '(empty)');
+      if (!layerData || !reactFlowInstance.current) return;
+
+      e.preventDefault();
       const layer: LayerDefinition = JSON.parse(layerData);
       const position = reactFlowInstance.current.screenToFlowPosition({
         x: e.clientX,
@@ -196,10 +242,14 @@ export function NetworkEditor() {
 
   return (
     <div className="network-editor" data-testid="network-editor">
-      <LayerPalette />
+      <LayerPalette onLayerClick={onPaletteLayerClick} />
       <div className="network-editor__canvas-area">
         <Toolbar />
-        <div className="network-editor__canvas">
+        <div
+          className="network-editor__canvas"
+          onDragOver={onWrapperDragOver}
+          onDrop={onWrapperDrop}
+        >
           <ReactFlow
             nodes={nodes}
             edges={edges}

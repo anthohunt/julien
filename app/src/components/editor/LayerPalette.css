@@ -44,7 +44,7 @@
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-radius: var(--radius);
-  cursor: grab;
+  cursor: pointer;
   transition: background 0.15s, border-color 0.15s;
   user-select: none;
 }
