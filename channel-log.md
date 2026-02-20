@@ -1360,3 +1360,23 @@ pnpm tauri dev
 
        Error `"tauri.conf.json"` error on `app`: Additional properties are not allowed ('title' was unexpected)
  ELIFECYCLE  Command failed with exit code 1.
+[2026-02-20 15:07] [AGENT] Manager: Le problème c'est `"title"` dans `app` — en Tauri v2, c'est pas un champ valide à ce niveau (c'est seulement dans `windows[]`). Je corrige et push.
+[2026-02-20 15:07] [AGENT] Manager: Aussi, il faut changer `beforeDevCommand` pour utiliser pnpm :
+[2026-02-20 15:07] [AGENT] Manager: C'est pushé ✅ Julien, fais un `git pull` puis relance :
+
+```
+cd julien/app
+git pull
+pnpm tauri dev
+```
+[2026-02-20 15:09] Julien Lesbegueries: ça lance un truc ! mais encore une erreur : 
+ Compiling muda v0.17.1
+error: proc macro panicked
+ --> src/lib.rs:6:14
+  |
+6 |         .run(tauri::generate_context!())
+  |              ^^^^^^^^^^^^^^^^^^^^^^^^^^
+  |
+  = help: message: failed to open icon /Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app/src-tauri/icons/icon.png: No such file or directory (os error 2)
+
+error: could not compile `neuralforge` (lib) due to 1 previous error
