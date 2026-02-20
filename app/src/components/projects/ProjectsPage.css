@@ -46,6 +46,20 @@
   font-size: 18px;
 }
 
+.projects-page__create-btn {
+  padding: 8px 16px;
+  background: var(--accent);
+  color: white;
+  border-radius: var(--radius);
+  font-size: 14px;
+  font-weight: 500;
+  transition: opacity 0.2s;
+}
+
+.projects-page__create-btn:hover {
+  opacity: 0.9;
+}
+
 .projects-page__empty-hint {
   font-size: 14px;
   color: var(--text-muted);
