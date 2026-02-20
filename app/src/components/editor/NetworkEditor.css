@@ -1,0 +1,59 @@
+.network-editor {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.network-editor__canvas-area {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.network-editor__canvas {
+  flex: 1;
+  position: relative;
+}
+
+.network-editor__controls {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+}
+
+.network-editor__controls button {
+  background: var(--bg-card) !important;
+  border-bottom: 1px solid var(--border) !important;
+  color: var(--text-primary) !important;
+}
+
+.network-editor__controls button:hover {
+  background: var(--bg-card-hover) !important;
+}
+
+.network-editor__controls button svg {
+  fill: var(--text-primary) !important;
+}
+
+.network-editor__minimap {
+  background: var(--bg-secondary) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: var(--radius) !important;
+}
+
+/* Override ReactFlow styles for dark theme */
+.react-flow__edge-path {
+  stroke: var(--accent) !important;
+  stroke-width: 2;
+}
+
+.react-flow__edge:hover .react-flow__edge-path {
+  stroke: var(--text-primary) !important;
+}
+
+.react-flow__connection-line {
+  stroke: var(--accent) !important;
+  stroke-width: 2;
+}

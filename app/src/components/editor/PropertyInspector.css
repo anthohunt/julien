@@ -1,0 +1,85 @@
+.property-inspector {
+  width: 260px;
+  background: var(--bg-secondary);
+  border-left: 1px solid var(--border);
+  padding: 16px;
+  overflow-y: auto;
+  flex-shrink: 0;
+}
+
+.property-inspector__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 16px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.property-inspector__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--border);
+}
+
+.property-inspector__node-label {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent);
+}
+
+.property-inspector__node-type {
+  font-size: 11px;
+  color: var(--text-muted);
+  font-family: monospace;
+}
+
+.property-inspector__empty {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+.property-inspector__fields {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.property-inspector__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.property-inspector__label {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.property-inspector__input,
+.property-inspector__select {
+  padding: 6px 10px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: var(--font);
+}
+
+.property-inspector__input:focus,
+.property-inspector__select:focus {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
+.property-inspector__select {
+  cursor: pointer;
+}

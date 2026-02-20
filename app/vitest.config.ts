@@ -8,11 +8,19 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src'),
     },
+    dedupe: ['react', 'react-dom'],
   },
   test: {
     globals: true,
     environment: 'jsdom',
     setupFiles: ['./src/test/setup.ts'],
     css: true,
+    deps: {
+      optimizer: {
+        web: {
+          include: ['react', 'react-dom', 'react-dom/client', '@testing-library/react', 'zustand', 'react-router-dom'],
+        },
+      },
+    },
   },
 });
