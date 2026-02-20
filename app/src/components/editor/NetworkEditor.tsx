@@ -13,7 +13,8 @@ import '@xyflow/react/dist/style.css';
 import { load } from '@tauri-apps/plugin-store';
 import { useNetworkStore } from '@/stores/networkStore';
 import type { LayerDefinition, LayerNode } from '@/types/network';
-import { canConnect, getCompatibleLayers } from '@/types/network';
+import { ALL_LAYERS } from '@/types/network';
+import { canConnect, getCompatibleLayers } from '@/types/connectionGrammar';
 import { LayerPalette } from './LayerPalette';
 import { PropertyInspector } from './PropertyInspector';
 import { Toolbar } from './Toolbar';
@@ -234,7 +235,7 @@ export function NetworkEditor() {
         const anchorNode = nodes.find((n) => n.id === dropPopup.anchorNodeId);
         if (!anchorNode) return [];
         const direction = dropPopup.handleType === 'source' ? 'outgoing' : 'incoming';
-        return getCompatibleLayers(anchorNode.data.layerType, direction);
+        return getCompatibleLayers(anchorNode.data.layerType, direction, ALL_LAYERS);
       })()
     : [];
 

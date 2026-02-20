@@ -58,6 +58,22 @@
   stroke-width: 2;
 }
 
+/* ── Invalid connection visual feedback ───────────────────── */
+
+.react-flow__handle.connecting {
+  background: var(--accent);
+}
+
+.react-flow__handle.valid {
+  background: var(--success, #22c55e) !important;
+  box-shadow: 0 0 6px var(--success, #22c55e);
+}
+
+.react-flow__handle.invalid {
+  background: var(--error, #ef4444) !important;
+  box-shadow: 0 0 6px var(--error, #ef4444);
+}
+
 /* ── Edge-drop layer picker popup ───────────────────────────── */
 
 .edge-drop-popup {

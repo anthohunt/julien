@@ -1,19 +1,27 @@
 import { memo } from 'react';
 import { Handle, Position, type NodeProps } from '@xyflow/react';
 import type { LayerNodeData } from '@/types/network';
+import { hasInputHandle, hasOutputHandle } from '@/types/connectionGrammar';
 import './LayerNode.css';
 
 type LayerNodeProps = NodeProps & { data: LayerNodeData };
 
 function LayerNodeComponent({ data, selected }: LayerNodeProps) {
+  const showInput = hasInputHandle(data.layerType);
+  const showOutput = hasOutputHandle(data.layerType);
+
   return (
     <div className={`layer-node ${selected ? 'layer-node--selected' : ''}`} data-category={data.category}>
-      <Handle type="target" position={Position.Top} className="layer-node__handle" />
+      {showInput && (
+        <Handle type="target" position={Position.Top} className="layer-node__handle" />
+      )}
       <div className="layer-node__body">
         <div className="layer-node__label">{data.label}</div>
         <div className="layer-node__type">{data.layerType}</div>
       </div>
-      <Handle type="source" position={Position.Bottom} className="layer-node__handle" />
+      {showOutput && (
+        <Handle type="source" position={Position.Bottom} className="layer-node__handle" />
+      )}
     </div>
   );
 }
