@@ -1,3 +1,6 @@
+import { useState, useCallback } from 'react';
+import { useSearchParams } from 'react-router-dom';
+import { load } from '@tauri-apps/plugin-store';
 import { useNetworkStore } from '@/stores/networkStore';
 import './Toolbar.css';
 
@@ -7,6 +10,28 @@ export function Toolbar() {
   const canUndo = useNetworkStore((s) => s.canUndo);
   const canRedo = useNetworkStore((s) => s.canRedo);
   const exportJSON = useNetworkStore((s) => s.exportJSON);
+  const [searchParams] = useSearchParams();
+  const [saving, setSaving] = useState(false);
+  const [saveFlash, setSaveFlash] = useState(false);
+
+  const projectId = searchParams.get('project');
+
+  const handleSave = useCallback(async () => {
+    if (!projectId || saving) return;
+    setSaving(true);
+    try {
+      const json = exportJSON();
+      const store = await load(`project-${projectId}.json`);
+      await store.set('architecture', JSON.parse(json));
+      await store.save();
+      setSaveFlash(true);
+      setTimeout(() => setSaveFlash(false), 1200);
+    } catch (err) {
+      console.error('Save failed:', err);
+    } finally {
+      setSaving(false);
+    }
+  }, [projectId, exportJSON, saving]);
 
   const handleExport = () => {
     const json = exportJSON();
@@ -42,6 +67,15 @@ export function Toolbar() {
         </button>
       </div>
       <div className="toolbar__group">
+        <button
+          className={`toolbar__btn toolbar__btn--save${saveFlash ? ' toolbar__btn--saved' : ''}`}
+          onClick={handleSave}
+          disabled={!projectId || saving}
+          aria-label="Save"
+          title="Sauvegarder (Ctrl+S)"
+        >
+          {saving ? 'Saving...' : saveFlash ? 'Saved!' : 'Save'}
+        </button>
         <button className="toolbar__btn toolbar__btn--accent" onClick={handleExport} aria-label="Export JSON">
           Export JSON
         </button>

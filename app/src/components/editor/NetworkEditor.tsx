@@ -1,4 +1,5 @@
-import { useCallback, useRef, type DragEvent } from 'react';
+import { useCallback, useEffect, useRef, type DragEvent } from 'react';
+import { useSearchParams } from 'react-router-dom';
 import {
   ReactFlow,
   MiniMap,
@@ -8,6 +9,7 @@ import {
   type ReactFlowInstance,
 } from '@xyflow/react';
 import '@xyflow/react/dist/style.css';
+import { load } from '@tauri-apps/plugin-store';
 import { useNetworkStore } from '@/stores/networkStore';
 import type { LayerDefinition, LayerNode } from '@/types/network';
 import { LayerPalette } from './LayerPalette';
@@ -32,6 +34,27 @@ export function NetworkEditor() {
   const selectedNodeId = useNetworkStore((s) => s.selectedNodeId);
   const deleteEdge = useNetworkStore((s) => s.deleteEdge);
 
+  const [searchParams] = useSearchParams();
+  const loadFromJSON = useNetworkStore((s) => s.loadFromJSON);
+
+  useEffect(() => {
+    const projectId = searchParams.get('project');
+    if (!projectId) return;
+    let cancelled = false;
+    (async () => {
+      try {
+        const store = await load(`project-${projectId}.json`);
+        const arch = await store.get<Record<string, unknown>>('architecture');
+        if (arch && !cancelled) {
+          loadFromJSON(JSON.stringify(arch));
+        }
+      } catch {
+        // No saved architecture yet — use defaults
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [searchParams, loadFromJSON]);
+
   const onDragOver = useCallback((e: DragEvent) => {
     e.preventDefault();
     e.dataTransfer.dropEffect = 'move';
@@ -41,13 +64,12 @@ export function NetworkEditor() {
     (e: DragEvent) => {
       e.preventDefault();
       const layerData = e.dataTransfer.getData('application/neuralforge-layer');
-      if (!layerData || !reactFlowInstance.current || !reactFlowWrapper.current) return;
+      if (!layerData || !reactFlowInstance.current) return;
 
       const layer: LayerDefinition = JSON.parse(layerData);
-      const bounds = reactFlowWrapper.current.getBoundingClientRect();
       const position = reactFlowInstance.current.screenToFlowPosition({
-        x: e.clientX - bounds.left,
-        y: e.clientY - bounds.top,
+        x: e.clientX,
+        y: e.clientY,
       });
 
       addNode(layer, position);
@@ -80,15 +102,18 @@ export function NetworkEditor() {
       <LayerPalette />
       <div className="network-editor__canvas-area">
         <Toolbar />
-        <div className="network-editor__canvas" ref={reactFlowWrapper}>
+        <div
+          className="network-editor__canvas"
+          ref={reactFlowWrapper}
+          onDragOver={onDragOver}
+          onDrop={onDrop}
+        >
           <ReactFlow
             nodes={nodes}
             edges={edges}
             onNodesChange={onNodesChange}
             onEdgesChange={onEdgesChange}
             onConnect={onConnect}
-            onDragOver={onDragOver}
-            onDrop={onDrop}
             onNodeClick={onNodeClick}
             onPaneClick={onPaneClick}
             onEdgeClick={onEdgeClick}

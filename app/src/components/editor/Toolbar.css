@@ -44,3 +44,19 @@
   background: var(--accent);
   color: var(--bg-primary);
 }
+
+.toolbar__btn--save {
+  background: var(--bg-card);
+  border-color: var(--border);
+}
+
+.toolbar__btn--save:hover:not(:disabled) {
+  background: var(--bg-card-hover);
+  border-color: var(--accent-border);
+}
+
+.toolbar__btn--saved {
+  background: var(--success-dim, rgba(74, 222, 128, 0.15));
+  border-color: var(--success, #4ade80);
+  color: var(--success, #4ade80);
+}
