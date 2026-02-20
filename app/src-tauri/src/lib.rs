@@ -8,9 +8,15 @@ pub struct ModelStatus {
 
 #[tauri::command]
 fn get_model_status() -> Result<ModelStatus, String> {
+    let backend = if cfg!(target_os = "macos") {
+        "metal".to_string()
+    } else {
+        "cpu".to_string()
+    };
+
     Ok(ModelStatus {
         ready: true,
-        backend: "cpu".to_string(),
+        backend,
     })
 }
 
