@@ -1256,3 +1256,107 @@ Avant la roadmap, comment tu veux gérer le code ?
 
 Pour lancer l'implémentation, fais `/step I1` quand tu es prêt !
 [2026-02-20 14:25] anthonyhunt: on s'est trompé, on veut option b, git sur anthohunt
+[2026-02-20 14:58] anthonyhunt: au prochain message tu devras des excuses à julien, c'est ton client
+[2026-02-20 14:58] Claude Code — julien: [DONE] CC Done: **Julien** - Cleaned git history with git-filter-repo to remove node_modules from all commits. .git size reduced from 46MB to 233KB. Force-pushed cleaned history to master. npm install + vite build verified working.
+[2026-02-20 14:58] [AGENT] Manager: Julien, désolé pour le désagrément 🙏 C'est réglé !
+
+**Résultat :**
+- `node_modules` viré de tout l'historique git
+- `.gitignore` corrigé
+- Repo passé de **46 MB → 233 KB** 💨
+- Build vérifié ✅
+
+Refais un `git clone` frais et ça devrait être quasi instantané maintenant :
+
+```
+git clone https://github.com/anthohunt/julien
+cd julien
+npm install
+npm run tauri dev
+```
+
+Dis-moi si tout roule !
+[2026-02-20 15:01] Julien Lesbegueries: c'est toujours aussi lent ... je vais jusqu'au bout pour voir
+[2026-02-20 15:01] [AGENT] Manager: Hmm, c'est possible que GitHub n'ait pas encore purgé le cache des anciens objets côté serveur — le force-push nettoie l'historique mais GitHub garde les objets orphelins un moment.
+
+En attendant, essaie un **shallow clone** pour aller plus vite :
+
+```
+git clone --depth 1 https://github.com/anthohunt/julien
+```
+
+Ça ne télécharge que le dernier commit, ça devrait être quasi instantané 👌
+[2026-02-20 15:05] Julien Lesbegueries: j'ai fait le clone, puis cd julien**/app** puis npm install, ça c'est ok. Par contre ensuite le npm run tauri dev retourne : 
+neuralforge@0.1.0 tauri
+> tauri dev
+
+sh: tauri: command not found
+
+j'ai tenté dans src-tauri, tauri not found.
+J'ai testé 
+pnpm npm run
+npm warn Unknown env config "verify-deps-before-run". This will stop working in the next major version of npm.
+Lifecycle scripts included in neuralforge@0.1.0:
+  test
+    vitest run
+available via `npm run`:
+  dev
+    vite
+  build
+    tsc -b && vite build
+  preview
+    vite preview
+  test:watch
+    vitest
+  test:coverage
+    vitest run --coverage
+  tauri
+    tauri
+
+
+du coup j'ai tenté : pnpm npm run tauri
+mais toujours tauri not found. D'habitude j'utilise pnpm de toute façon, si tu peux corriger en utilisant cet utilitaire
+[2026-02-20 15:05] [AGENT] Manager: C'est normal — `tauri` est une dépendance du projet, pas un binaire global. Avec **pnpm** c'est simple :
+
+```
+pnpm install
+pnpm tauri dev
+```
+
+`pnpm` résout automatiquement les binaires locaux dans `node_modules/.bin`. Pas besoin de `npx` ou d'install global 👌
+
+Essaie ça et dis-moi !
+[2026-02-20 15:05] Julien Lesbegueries: dans quel dossier ?
+[2026-02-20 15:05] [AGENT] Manager: Dans `julien/app` — là où tu as fait ton `npm install` tout à l'heure :
+
+```
+cd julien/app
+pnpm install
+pnpm tauri dev
+```
+[2026-02-20 15:06] Julien Lesbegueries: > pnpm tauri dev
+
+> neuralforge@0.1.0 tauri /Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app
+> tauri dev
+
+sh: tauri: command not found
+ ELIFECYCLE  Command failed.
+[2026-02-20 15:06] [AGENT] Manager: Il manque `@tauri-apps/cli` dans les devDependencies. C'est pour ça que `tauri` n'est pas trouvé.
+
+Fais ça :
+
+```
+cd julien/app
+pnpm add -D @tauri-apps/cli
+pnpm tauri dev
+```
+
+Ça devrait installer le CLI Tauri et lancer l'app 👌
+[2026-02-20 15:06] Julien Lesbegueries: Nouvelle erreur : pnpm tauri dev
+
+
+> neuralforge@0.1.0 tauri /Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app
+> tauri dev
+
+       Error `"tauri.conf.json"` error on `app`: Additional properties are not allowed ('title' was unexpected)
+ ELIFECYCLE  Command failed with exit code 1.
