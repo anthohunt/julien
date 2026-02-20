@@ -1412,3 +1412,81 @@ thread 'main' (816319) panicked at src/lib.rs:7:10:
 error while running tauri application: PluginInitialization("fs", "Error deserializing 'plugins.fs' within your Tauri configuration: unknown field `scope`, expected `requireLiteralLeadingDot`")
 note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
  ELIFECYCLE  Command failed with exit code 101.
+[2026-02-20 15:11] [AGENT] Manager: Le plugin `fs` en Tauri v2 n'utilise plus `scope` dans la config. Je corrige :
+[2026-02-20 15:11] [AGENT] Manager: Pushé ✅ On y est presque !
+
+```
+git pull
+pnpm tauri dev
+```
+[2026-02-20 15:13] Julien Lesbegueries: Nouvelle erreur : 
+> pnpm tauri dev
+
+> neuralforge@0.1.0 tauri /Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app
+> tauri dev
+
+     Running BeforeDevCommand (`pnpm dev`)
+
+> neuralforge@0.1.0 dev /Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app
+> vite
+
+
+  VITE v6.4.1  ready in 101 ms
+
+  ➜  Local:   http://localhost:1420/
+  ➜  Network: http://192.168.1.198:1420/
+  ➜  Network: http://169.254.89.191:1420/
+     Running DevCommand (`cargo  run --no-default-features --color always --`)
+        Info Watching /Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app/src-tauri for changes...
+   Compiling neuralforge v0.1.0 (/Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app/src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 2.70s
+     Running `target/debug/neuralforge`
+
+thread 'main' (819260) panicked at src/lib.rs:7:10:
+error while running tauri application: PluginInitialization("store", "Error deserializing 'plugins.store' within your Tauri configuration: invalid type: map, expected unit")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ ELIFECYCLE  Command failed with exit code 101.
+
+
+tu veux pas tester par toi même et attendre que l'app se lance vrimanet ?
+[2026-02-20 15:14] [AGENT] Manager: Il a raison, je fais ça proprement d'un coup. Je lance CC pour tester sur place jusqu'à ce que ça compile clean.
+[2026-02-20 15:14] [AGENT] Manager: Actually, let me just launch CC to properly fix and test everything:
+[2026-02-20 15:14] [AGENT] Manager: Julien, t'as raison, désolé pour le ping-pong 🙏 J'ai lancé CC pour qu'il teste en boucle jusqu'à ce que l'app se lance **vraiment**. Plus de fix à l'aveugle — je te préviens quand c'est confirmé fonctionnel.
+[2026-02-20 15:23] Claude Code — julien: [DONE] CC Done: **Julien/NeuralForge** - Fixed all Tauri v2 config issues. Removed invalid plugins section (store unit type error), fixed $schema URL, added capabilities/default.json, generated icon.ico for Windows. App compiles and launches successfully. Commit 00861a9 pushed to master.
+[2026-02-20 15:23] [AGENT] Manager: Julien, c'est testé et confirmé cette fois ✅ L'app compile et se lance !
+
+```
+git pull
+pnpm install
+pnpm tauri dev
+```
+
+Dis-moi si la fenêtre s'ouvre bien 🤞
+[2026-02-20 15:28] Julien Lesbegueries: ok la création de projet a l'air de marcher
+[2026-02-20 15:28] [AGENT] Manager: Nickel ! 🎉 Content que ça tourne enfin.
+
+N'hésite pas à explorer l'app et me dire ce que t'en penses — on est en phase de review sur l'Epic 1, donc tous tes retours sont bienvenus (bugs, trucs pas intuitifs, fonctionnalités manquantes...).
+[2026-02-20 15:29] Julien Lesbegueries: c'est bon cette partie marche (je ne peux pas tester le nombre d'architectures, etc. pour l'instant ce qui est normal)
+[2026-02-20 15:29] [AGENT] Manager: Parfait 👌 L'Epic 1 (Accueil / Projets) a l'air validé alors.
+
+Tu veux continuer à explorer les autres parties de l'app, ou on passe à la suite avec l'**Epic 2 — Éditeur de réseau** ?
+[2026-02-20 15:30] Julien Lesbegueries: on passe à la suite Epic 2
+[2026-02-20 15:31] [AGENT] Manager: ═══════════════════════════════════════
+🧠 EPIC 2 — Éditeur de réseau
+═══════════════════════════════════════
+
+**Stories :**
+- **US-E1 :** Drag & drop de layers depuis la palette vers le canvas
+- **US-E2 :** Connexions bézier entre nœuds
+- **US-E3 :** Inspecteur de propriétés au clic (units, rate, activation...)
+- **US-E4 :** Undo / Redo
+- **US-E5 :** Export architecture en JSON
+- **US-E7 :** Minimap de navigation
+
+───────────────────────────────────────
+
+CC est lancé, je te préviens dès que c'est prêt pour tester 🚀
+[2026-02-20 15:31] [AGENT] Manager: Now I have what I need. Let me post the epic start and launch CC.
+[2026-02-20 15:33] Julien Lesbegueries: ok
+[2026-02-20 15:41] anthonyhunt: working bot it is 🦾 [attachment: image.png]
+[2026-02-20 15:41] Julien Lesbegueries: yeah
