@@ -1380,3 +1380,35 @@ error: proc macro panicked
   = help: message: failed to open icon /Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app/src-tauri/icons/icon.png: No such file or directory (os error 2)
 
 error: could not compile `neuralforge` (lib) due to 1 previous error
+[2026-02-20 15:10] [AGENT] Manager: C'est pushé ✅ L'icône manquait du repo. Fais :
+
+```
+git pull
+pnpm tauri dev
+```
+[2026-02-20 15:11] Julien Lesbegueries: nouvelle erreur : > pnpm tauri dev
+
+> neuralforge@0.1.0 tauri /Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app
+> tauri dev
+
+     Running BeforeDevCommand (`pnpm dev`)
+
+> neuralforge@0.1.0 dev /Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app
+> vite
+
+
+  VITE v6.4.1  ready in 102 ms
+
+  ➜  Local:   http://localhost:1420/
+  ➜  Network: http://192.168.1.198:1420/
+  ➜  Network: http://169.254.89.191:1420/
+     Running DevCommand (`cargo  run --no-default-features --color always --`)
+        Info Watching /Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app/src-tauri for changes...
+   Compiling neuralforge v0.1.0 (/Users/jlesbegu/Travail/dev/git/pipeline_anthony/julien/app/src-tauri)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 3.05s
+     Running `target/debug/neuralforge`
+
+thread 'main' (816319) panicked at src/lib.rs:7:10:
+error while running tauri application: PluginInitialization("fs", "Error deserializing 'plugins.fs' within your Tauri configuration: unknown field `scope`, expected `requireLiteralLeadingDot`")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+ ELIFECYCLE  Command failed with exit code 101.
