@@ -25,6 +25,12 @@ interface NetworkState {
   onEdgesChange: (changes: EdgeChange<NetworkEdge>[]) => void;
   onConnect: (connection: Connection) => void;
   addNode: (layer: LayerDefinition, position: { x: number; y: number }) => void;
+  addNodeWithEdge: (
+    layer: LayerDefinition,
+    position: { x: number; y: number },
+    anchorNodeId: string,
+    handleType: 'source' | 'target',
+  ) => void;
   selectNode: (id: string | null) => void;
   updateNodeParam: (nodeId: string, key: string, value: number | string | boolean) => void;
   deleteNode: (id: string) => void;
@@ -127,6 +133,31 @@ export const useNetworkStore = create<NetworkState>((set, get) => ({
       },
     };
     set((state) => ({ nodes: [...state.nodes, newNode] }));
+    get().pushHistory();
+  },
+
+  addNodeWithEdge: (layer, position, anchorNodeId, handleType) => {
+    const id = `${layer.type}-${++nodeCounter}`;
+    const newNode: LayerNode = {
+      id,
+      type: 'layerNode',
+      position,
+      data: {
+        label: layer.label,
+        layerType: layer.type,
+        category: layer.category,
+        params: { ...layer.defaultParams },
+      },
+    };
+    const edge: NetworkEdge =
+      handleType === 'source'
+        ? { id: `e-${anchorNodeId}-${id}`, source: anchorNodeId, target: id }
+        : { id: `e-${id}-${anchorNodeId}`, source: id, target: anchorNodeId };
+
+    set((state) => ({
+      nodes: [...state.nodes, newNode],
+      edges: [...state.edges, edge],
+    }));
     get().pushHistory();
   },
 

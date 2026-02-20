@@ -57,3 +57,70 @@
   stroke: var(--accent) !important;
   stroke-width: 2;
 }
+
+/* ── Edge-drop layer picker popup ───────────────────────────── */
+
+.edge-drop-popup {
+  position: fixed;
+  z-index: 1000;
+  min-width: 180px;
+  max-height: 320px;
+  overflow-y: auto;
+  background: var(--bg-secondary);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  padding: 4px 0;
+  transform: translate(-50%, 8px);
+}
+
+.edge-drop-popup__header {
+  padding: 6px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+
+.edge-drop-popup__list {
+  list-style: none;
+  margin: 0;
+  padding: 4px 0;
+}
+
+.edge-drop-popup__item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 12px;
+  cursor: pointer;
+  transition: background 0.1s;
+  border-left: 3px solid transparent;
+}
+
+.edge-drop-popup__item:hover {
+  background: var(--bg-card-hover);
+}
+
+.edge-drop-popup__item[data-category="burn"] {
+  border-left-color: var(--accent);
+}
+
+.edge-drop-popup__item[data-category="utility"] {
+  border-left-color: var(--success);
+}
+
+.edge-drop-popup__label {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+
+.edge-drop-popup__type {
+  font-size: 10px;
+  color: var(--text-muted);
+  font-family: monospace;
+  margin-left: 12px;
+}

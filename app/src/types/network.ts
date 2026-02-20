@@ -39,3 +39,44 @@ export const UTILITY_LAYERS: LayerDefinition[] = [
 ];
 
 export const ALL_LAYERS: LayerDefinition[] = [...BURN_LAYERS, ...UTILITY_LAYERS];
+
+/* ── Layer connection compatibility ────────────────────────── */
+
+export type LayerRole = 'input' | 'processing' | 'output' | 'utility';
+
+export function getLayerRole(layerType: string): LayerRole {
+  if (layerType === 'input') return 'input';
+  if (layerType === 'output') return 'output';
+  if (['reshape', 'concat', 'split'].includes(layerType)) return 'utility';
+  return 'processing';
+}
+
+/**
+ * Basic grammar validation for layer connections:
+ * - Input → processing only
+ * - Processing → processing, utility, or output
+ * - Utility (reshape/concat/split) → processing or output
+ * - Output → cannot be a source
+ * - Input → cannot be a target
+ */
+export function canConnect(sourceType: string, targetType: string): boolean {
+  const srcRole = getLayerRole(sourceType);
+  const tgtRole = getLayerRole(targetType);
+
+  if (srcRole === 'output') return false;
+  if (tgtRole === 'input') return false;
+  if (srcRole === 'input' && tgtRole !== 'processing') return false;
+
+  return true;
+}
+
+export function getCompatibleLayers(
+  anchorType: string,
+  direction: 'outgoing' | 'incoming',
+): LayerDefinition[] {
+  return ALL_LAYERS.filter((layer) =>
+    direction === 'outgoing'
+      ? canConnect(anchorType, layer.type)
+      : canConnect(layer.type, anchorType),
+  );
+}
