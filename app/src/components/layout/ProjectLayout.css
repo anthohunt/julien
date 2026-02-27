@@ -1,0 +1,13 @@
+.project-layout {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.project-layout__content {
+  flex: 1;
+  min-width: 0;
+  height: 100vh;
+  overflow: auto;
+}

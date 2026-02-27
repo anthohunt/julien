@@ -1,0 +1,40 @@
+.training-page {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+.training-page__header {
+  padding: 20px 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+.training-page__title {
+  font-size: 20px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.training-page__content {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.training-page__placeholder {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.training-page__placeholder-icon {
+  font-size: 48px;
+  display: block;
+  margin-bottom: 16px;
+}
+
+.training-page__placeholder-hint {
+  color: var(--text-muted);
+  font-size: 14px;
+  margin-top: 8px;
+}

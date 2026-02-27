@@ -1,5 +1,4 @@
 import { useState, useCallback } from 'react';
-import { useNavigate, useSearchParams } from 'react-router-dom';
 import { useDatasetStore, computeSeriesStats } from '@/stores/datasetStore';
 import type { Dataset } from '@/types/dataset';
 import { ImportCsvModal } from './ImportCsvModal';
@@ -8,8 +7,6 @@ import { DatasetDetail } from './DatasetDetail';
 import './DataManagementPage.css';
 
 export function DataManagementPage() {
-  const [searchParams] = useSearchParams();
-  const navigate = useNavigate();
   const datasets = useDatasetStore((s) => s.datasets);
   const addDataset = useDatasetStore((s) => s.addDataset);
   const deleteDataset = useDatasetStore((s) => s.deleteDataset);
@@ -17,8 +14,6 @@ export function DataManagementPage() {
   const [showImport, setShowImport] = useState(false);
   const [datasetToDelete, setDatasetToDelete] = useState<Dataset | null>(null);
   const [selectedDatasetId, setSelectedDatasetId] = useState<string | null>(null);
-
-  const projectId = searchParams.get('project');
 
   const handleImport = useCallback(
     (fileName: string, content: string) => {
@@ -43,12 +38,6 @@ export function DataManagementPage() {
     <div className="data-page">
       <header className="data-page__header">
         <div className="data-page__nav">
-          <button
-            className="data-page__back"
-            onClick={() => navigate(`/editor?project=${projectId ?? ''}`)}
-          >
-            ← Retour
-          </button>
           <h1 className="data-page__title">Gestion des donnees</h1>
         </div>
         <button className="data-page__import-btn" onClick={() => setShowImport(true)}>
