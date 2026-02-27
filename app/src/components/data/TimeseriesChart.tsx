@@ -1,4 +1,5 @@
-import ReactECharts from 'echarts-for-react';
+import { useRef, useEffect, useMemo } from 'react';
+import * as echarts from 'echarts';
 import type { CsvRow } from '@/types/dataset';
 import './TimeseriesChart.css';
 
@@ -7,11 +8,8 @@ interface TimeseriesChartProps {
   series: string[];
 }
 
-export function TimeseriesChart({ rows, series }: TimeseriesChartProps) {
-  if (series.length === 0) {
-    return <p className="timeseries-chart__empty">Aucune serie a afficher</p>;
-  }
-
+/** Build the echarts option from rows + series. Exported for testing. */
+export function buildChartOption(rows: CsvRow[], series: string[]) {
   const allDates = [...new Set(rows.map((r) => r.ds))].sort();
 
   const chartSeries = series.map((uid) => {
@@ -26,7 +24,7 @@ export function TimeseriesChart({ rows, series }: TimeseriesChartProps) {
     };
   });
 
-  const option = {
+  return {
     tooltip: { trigger: 'axis' as const },
     legend: { data: series, textStyle: { color: '#8888aa' } },
     xAxis: {
@@ -43,10 +41,45 @@ export function TimeseriesChart({ rows, series }: TimeseriesChartProps) {
     backgroundColor: 'transparent',
     grid: { left: '3%', right: '4%', bottom: '3%', containLabel: true },
   };
+}
+
+export function TimeseriesChart({ rows, series }: TimeseriesChartProps) {
+  const chartRef = useRef<HTMLDivElement>(null);
+  const instanceRef = useRef<echarts.ECharts | null>(null);
+
+  const option = useMemo(
+    () => (series.length === 0 ? null : buildChartOption(rows, series)),
+    [rows, series]
+  );
+
+  useEffect(() => {
+    if (!chartRef.current || !option) return;
+
+    const instance = echarts.init(chartRef.current);
+    instanceRef.current = instance;
+    instance.setOption(option);
+
+    const handleResize = () => instance.resize();
+    window.addEventListener('resize', handleResize);
+
+    const ro = new ResizeObserver(() => instance.resize());
+    ro.observe(chartRef.current);
+
+    return () => {
+      window.removeEventListener('resize', handleResize);
+      ro.disconnect();
+      instance.dispose();
+      instanceRef.current = null;
+    };
+  }, [option]);
+
+  if (series.length === 0) {
+    return <p className="timeseries-chart__empty">Aucune serie a afficher</p>;
+  }
 
   return (
     <div className="timeseries-chart">
-      <ReactECharts option={option} style={{ height: '400px' }} />
+      <div ref={chartRef} style={{ height: '400px', width: '100%' }} />
     </div>
   );
 }

@@ -18,7 +18,7 @@ export default defineConfig({
     deps: {
       optimizer: {
         web: {
-          include: ['react', 'react-dom', 'react-dom/client', '@testing-library/react', 'zustand', 'react-router-dom'],
+          include: ['react', 'react-dom', 'react-dom/client', '@testing-library/react', 'zustand', 'react-router-dom', 'echarts'],
         },
       },
     },
